@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainFragment">
+
+    <!--Content-->
+
+    <LinearLayout
+        android:background="#82ffffff"
+        android:padding="@dimen/padding"
+        android:layout_margin="@dimen/margin"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--Logo-->
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <!--Phone-->
+        <EditText
+            android:id="@+id/edtIdCustomer"
+            android:textSize="@dimen/h3"
+            android:background="@drawable/textfiled1"
+            android:hint="ID Customer"
+            android:text="55122200004"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Login-->
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/btnLogin"
+                android:background="@drawable/bg_buttom"
+                android:text="Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--QR Code-->
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/btnQR"
+                android:background="@drawable/bg_buttom"
+                android:text="QR code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
