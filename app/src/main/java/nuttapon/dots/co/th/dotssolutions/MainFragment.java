@@ -29,13 +29,26 @@ public class MainFragment extends Fragment{
 
     }// Main Method
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String qrString = data.getStringExtra("QRcode");
+        Log.d("5SepV3", "QRcode ==> " + qrString);
+
+        checkAuthentication(qrString);
+
+    }
+
     private void QRController() {
         Button button = getView().findViewById(R.id.btnQR);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
+                Intent intent = new Intent(getActivity(), QRActivity.class);
+                startActivityForResult(intent, 100);
 
             }
         });
@@ -67,32 +80,7 @@ public class MainFragment extends Fragment{
                             "Please Fill ID Customer only 11 Digi");
                 } else {
 
-                    try {
-
-                    GetUserWhereIdCustomer getUserWhereIdCustomer=new GetUserWhereIdCustomer(getActivity());
-                    getUserWhereIdCustomer.execute(idCustomerString,myConstant.getUrlGetUserWhereCustID());
-                    String jsonString = getUserWhereIdCustomer.get();
-                        Log.d("3SepV1","json ==> " + jsonString);
-
-                        if (jsonString.equals("null")) {
-                            myAlert.normalDialog("No ID Customer",
-                                    "No "+ idCustomerString + " in my Database");
-                        } else {
-
-                            SharedPreferences sharedPreferences =getActivity()
-                                    .getSharedPreferences("MyData", Context.MODE_PRIVATE);//  SharedPreferences จะสร้าง Text File ขึ้นมาแล้วเอาค่าที่ Json ดึงออกมาทั้งหมดมาเก็บไว้
-                            SharedPreferences.Editor editor=sharedPreferences.edit();
-                            editor.putString("User",jsonString);
-                            editor.commit();
-
-                            startActivity(new Intent(getActivity(),ServiceActivity.class));
-                            getActivity().finish();
-                        }
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-
-                    }
+                    checkAuthentication(idCustomerString);
 
 
 
@@ -101,6 +89,38 @@ public class MainFragment extends Fragment{
 
             }
         });
+    }
+
+    private void checkAuthentication(String idCustomerString) {
+        MyAlert myAlert1=new MyAlert(getActivity());
+        MyConstant myConstant1 =new MyConstant();
+
+        try {
+
+        GetUserWhereIdCustomer getUserWhereIdCustomer=new GetUserWhereIdCustomer(getActivity());
+        getUserWhereIdCustomer.execute(idCustomerString,myConstant1.getUrlGetUserWhereCustID());
+        String jsonString = getUserWhereIdCustomer.get();
+            Log.d("3SepV1","json ==> " + jsonString);
+
+            if (jsonString.equals("null")) {
+                myAlert1.normalDialog("No ID Customer",
+                        "No "+ idCustomerString + " in my Database");
+            } else {
+
+                SharedPreferences sharedPreferences =getActivity()
+                        .getSharedPreferences("MyData", Context.MODE_PRIVATE);//  SharedPreferences จะสร้าง Text File ขึ้นมาแล้วเอาค่าที่ Json ดึงออกมาทั้งหมดมาเก็บไว้
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putString("User",jsonString);
+                editor.commit();
+
+                startActivity(new Intent(getActivity(),ServiceActivity.class));
+                getActivity().finish();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
     }
 
     @Nullable

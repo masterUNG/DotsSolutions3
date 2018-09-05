@@ -8,7 +8,7 @@
     <!--Content-->
 
     <LinearLayout
-        android:background="#82ffffff"
+        android:background="@drawable/bg_buttom"
         android:padding="@dimen/padding"
         android:layout_margin="@dimen/margin"
         android:orientation="vertical"
