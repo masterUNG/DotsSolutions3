@@ -72,7 +72,7 @@
                         android:id="@+id/txtLat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lat = 12.123456"
+                        android:text="Lat = n/a"
                         android:textSize="@dimen/h2"
                         android:textStyle="bold" />
 
@@ -80,7 +80,7 @@
                         android:id="@+id/txtLng"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lng = 12.123456"
+                        android:text="Lng = n/a"
                         android:textSize="@dimen/h2"
                         android:textStyle="bold" />
 
