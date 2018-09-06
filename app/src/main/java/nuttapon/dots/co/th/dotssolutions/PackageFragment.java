@@ -2,6 +2,7 @@ package nuttapon.dots.co.th.dotssolutions;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
@@ -37,7 +38,7 @@ public class PackageFragment extends Fragment {
     private MyConstant myConstant = new MyConstant();
     private MyAlert myAlert;
     private String displayNameString, genderString, ageString,
-            latString, lngString;
+            latString, lngString, imagePathString;
     private boolean genderABoolean = true, ageABoolean = true;
     private Uri cameraUri;
 
@@ -175,13 +176,27 @@ public class PackageFragment extends Fragment {
 
         try {
 
+            String[] strings = new String[]{MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver().query(uri, strings,
+                    null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                imagePathString = cursor.getString(i);
+            } else {
+                imagePathString = uri.getPath();
+            }
+
+            Log.d("6SepV3", "imagePath ==> " + imagePathString);
+
+
+
             Bitmap bitmap = BitmapFactory.decodeStream(getActivity()
                     .getContentResolver().openInputStream(uri));
             Bitmap bitmap1 = Bitmap.createScaledBitmap(bitmap, 800, 600, false);
 
             ImageView imageView = getView().findViewById(R.id.imvPhoto);
             imageView.setImageBitmap(bitmap1);
-
 
 
         } catch (Exception e) {
@@ -266,11 +281,20 @@ public class PackageFragment extends Fragment {
                 } else if (ageABoolean) {
                     myAlert.normalDialog("No Age",
                             "Please Choose Age");
+                } else {
+                    uploadPhotoToServer();
                 }
 
 
             }   // onClick
         });
+    }
+
+    private void uploadPhotoToServer() {
+
+
+
+
     }
 
     @Override
