@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 
 /**
@@ -18,7 +19,8 @@ public class PackageFragment extends Fragment {
 
     private MyConstant myConstant = new MyConstant();
     private MyAlert myAlert;
-    private String displayNameString;
+    private String displayNameString, genderString;
+    private boolean genderABoolean = true;
 
 
     public PackageFragment() {
@@ -34,8 +36,28 @@ public class PackageFragment extends Fragment {
 //        Upload Controller
         uploadController();
 
+//        Radio Controller
+        radioController();
 
     }   // Main Method
+
+    private void radioController() {
+        RadioGroup radioGroup = getView().findViewById(R.id.ragGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radMale:
+                        genderString = "Male";
+                        break;
+                    case R.id.radFemale:
+                        genderString = "Female";
+                        break;
+                }
+                genderABoolean = false;
+            }
+        });
+    }
 
     private void uploadController() {
         Button button = getView().findViewById(R.id.btnUpload);
@@ -50,9 +72,10 @@ public class PackageFragment extends Fragment {
                 if (displayNameString.isEmpty()) {
                     myAlert.normalDialog(getString(R.string.title_have_space),
                             getString(R.string.message_have_space));
+                } else if (genderABoolean) {
+                    myAlert.normalDialog(getString(R.string.title_no_gender),
+                            getString(R.string.message_no_gender));
                 }
-
-
 
 
             }   // onClick
