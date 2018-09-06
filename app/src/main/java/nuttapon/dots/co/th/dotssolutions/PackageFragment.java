@@ -8,6 +8,8 @@ import android.location.Criteria;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +25,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
+import java.util.Random;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +39,7 @@ public class PackageFragment extends Fragment {
     private String displayNameString, genderString, ageString,
             latString, lngString;
     private boolean genderABoolean = true, ageABoolean = true;
-
+    private Uri cameraUri;
 
 
     public PackageFragment() {
@@ -62,8 +67,40 @@ public class PackageFragment extends Fragment {
 //        Gallery Controller
         galleryController();
 
+//        Camera Controller
+        cameraController();
 
     }   // Main Method
+
+    private void cameraController() {
+        ImageView imageView = getView().findViewById(R.id.imvCamera);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                Setup Path
+                String pathString = Environment.getExternalStorageDirectory() + "/" + "Dots";
+                Log.d("6SepV2", "Path Image ==> " + pathString);
+
+                File file = new File(pathString);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+
+//                Setup Name File
+                Random random = new Random();
+                int i = random.nextInt(1000);
+                File cameraFile1 = new File(file, "dots_" + Integer.toString(i) + "jpg");
+
+                cameraUri = Uri.fromFile(cameraFile1);
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
+                startActivityForResult(intent, 150);
+
+            }   // onClick
+        });
+    }
 
     private void galleryController() {
         ImageView imageView = getView().findViewById(R.id.imvGallery);
@@ -107,6 +144,18 @@ public class PackageFragment extends Fragment {
                     } else {
                         myAlert.normalDialog("Not Photo",
                                 "Please Photo on Gallery");
+                    }
+
+                    break;
+                case 150:
+
+                    if (resultCode == getActivity().RESULT_OK) {
+
+                        showPhoto(cameraUri);
+
+                    } else {
+                        myAlert.normalDialog("No Photo",
+                                "Please Take Photo on Camera");
                     }
 
                     break;
